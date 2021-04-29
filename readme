@@ -1,0 +1,66 @@
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$		README - EETAUTAU BY FELIX GAMST		$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+This code calculates all parts of the cross section for 
+e^- e^+ -> tau^- tau^+  at NLO QED.
+When launched in the console the executable "eetautau" located in "./bin" will
+calculate the part specified by performing the respective MC integral
+(using VEGAS):
+
+I. LO contribution is called by:
+
+	"eetautau (b)orn"
+
+II. NLO real contribution is called by:
+
+	"eetautau (r)ealCor"
+
+III. NLO virtual contribution (using QCDLoop for scalar integrals) is called by:
+
+	"eetautau (v)irtCor"
+
+IV. Integrated dipole contribution is called by:
+
+	"eetautau (i)ntDip"
+
+The results are stored with according names in "./bin/out".
+They include histograms with errors (standard deviation) and the final result
+of the MC integral
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$	CONSISTENCY		$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Multiple checks of consistency of the programs functions contained in 
+"./ext/checks.cc" can be performed.
+They include:
+
+	- checks of (squared) matrix elements (using MadGraph for reference),
+	- checks of phase space generators,
+	- checks of numeric stability (using a singularity generator by M. Schulze),
+	- checks of QCDLoop implementation.
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$	INPUT PARAMETERS		$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+the input analytics support setting of the two parameters alpha and mu.
+Setting values for both in the same call is not supported
+
+I: setting of the alpha phase space cuts for the dipoles:
+
+	"eetautau intDip aII x" -> sets  alpha_II = 10^-x where x is any integer preferably
+				   between 0 and 5
+
+
+II: setting of the renormalization scale:
+
+	"eetautau intDip mu x y " -> sets  mu = x*y where x is any integer and y one of the 
+				     following physical parameters: 
+						me, mmu, mtau, Etot(10.583GeV), MW, MZ
+
+
+
+The physical input parameters are set in the head.h file.

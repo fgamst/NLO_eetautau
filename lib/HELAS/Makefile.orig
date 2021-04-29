@@ -1,0 +1,81 @@
+
+FC            = gfortran
+F77 = gfortran
+
+FFLAGS        = -O +ppu
+
+LD	      = ld
+
+DEST	      = ../lib
+
+EXTHDRS	      =
+
+HDRS	      =
+
+INSTALL	      = /etc/install
+
+LIBRARY	      = libdhelas3.a
+
+MAKEFILE      = Makefile
+
+OBJS	      = boostx.o coup1x.o coup2x.o coup3x.o coup4x.o \
+		eaixxx.o eaoxxx.o fsixxx.o fsoxxx.o fvidmx.o \
+		fvixxx.o fvodmx.o fvoxxx.o ggggxx.o gggxxx.o \
+		hioxxx.o hsssxx.o hssxxx.o hvsxxx.o hvvsxx.o \
+		hvvxxx.o iosxxx.o iovdmx.o iovxxx.o ixxxxx.o \
+		j3xxxx.o jeexxx.o jgggxx.o jggxxx.o jiodmx.o \
+		jioxxx.o jssxxx.o jvssxx.o jvsxxx.o jvvxxx.o \
+		jw3wxx.o jwwwxx.o mom2cx.o momntx.o oxxxxx.o \
+		rotxxx.o ssssxx.o sssxxx.o sxxxxx.o vssxxx.o \
+		vvssxx.o vvsxxx.o vvvxxx.o vxxxxx.o w3w3xx.o \
+		wwwwxx.o
+
+PRINT	      = pr
+
+SHELL	      = /bin/sh
+
+SYSHDRS	      =
+
+MFLAGS        = -e
+
+.F.o:
+	$(FC) $(FFLAGS) -c $<
+
+all:		$(LIBRARY)
+
+helas:
+		-rm -f *.o
+		export FFLAGS='-O +ppu' && \
+		export LIBRARY=libdhelas3.a && \
+		$(MAKE) $(MFLAGS)
+
+helas_check:
+		-rm -f *.o
+		export FFLAGS='-O +ppu -DHELAS_CHECK' && \
+		export LIBRARY=libdhelas3_check.a && \
+		$(MAKE) $(MFLAGS)
+
+install-helas:
+		export LIBRARY=libdhelas3.a && \
+		$(MAKE) $(MFLAGS) install	
+
+install-helas_check:
+		export LIBRARY=libdhelas3.a && \
+		$(MAKE) $(MFLAGS) install	
+
+$(LIBRARY):	$(OBJS)
+		@echo  "Loading $(LIBRARY) ... "
+		@ar cru $(LIBRARY) $(OBJS)
+		@echo "done"
+
+clean:;		@rm -f $(OBJS) core
+
+clobber:;	@rm -f $(OBJS) $(LIBRARY) core tags
+
+install:	$(LIBRARY)
+	        @echo Installing $(LIBRARY) in $(DEST)
+	        @if [ $(DEST) != . ]; then \
+	        (rm -f $(DEST)/$(LIBRARY); $(INSTALL) -f $(DEST) $(LIBRARY)); fi
+
+$(DEST)/$(LIBRARY): $(SRCS) $(HDRS) $(EXTHDRS)
+	        @$(MAKE) -f $(MAKEFILE) ROOT=$(ROOT) DEST=$(DEST) install
